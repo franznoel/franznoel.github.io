@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>WoW</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!--Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h3 id="guildName">Reign Of Bloods</h3>
+            <table id="members-table" class="table table-bordered table-height table-collapsed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Achievement Points</th>
+                        <th>Specialty</th>
+                        <th>Race</th>
+                        <th>Class</th>
+                        <th>Role</th>
+                        <!--
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Description</th>
+                        -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--https://us.api.battle.net/wow/-->
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+    <script type="text/javascript">
+        var guildName = "Reign Of Bloods",
+        apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
+
+        function getRace(characterRace) {
+            switch(characterRace) {
+                case 1:
+                    return 'Human';
+                case 2:
+                    return 'Orc';
+                case 3:
+                    return 'Dwarf';
+                case 4:
+                    return 'Nightelf';
+                case 5:
+                    return 'Undead';
+                case 6:
+                    return 'Tauren';
+                case 7:
+                    return 'Gnome';
+                case 8:
+                    return 'Troll';
+                case 10:
+                    return 'Bloodelf';
+                case 11:
+                    return 'Draenei';
+            }
+        }
+
+        function getClass(characterClass) {
+            switch(characterClass) {
+                case 1:
+                    return 'Warrior';
+                case 2:
+                    return 'Paladin';
+                case 3:
+                    return 'Hunter';
+                case 4:
+                    return 'Rogue';
+                case 5:
+                    return 'Priest';
+                case 6:
+                    return 'Shaman';
+                case 7:
+                    return 'Mage';
+                case 9:
+                    return 'Warlock';
+                case 11:
+                    return 'Druid';
+            }
+        }
+
+        function getGuildMembers(guildName) {
+            $.getJSON('https://us.api.battle.net/wow/guild/Dalaran/Reign%20of%20Bloods?fields=members&locale=en_US&apikey='+apiKey,
+                {},
+                function(data) {
+                    var members = data.members;
+                    // console.log(members[0]);
+                    // console.log(members[0].character.spec);
+                    // console.log(members[0].character.spec.name);
+                    var membersHtml = '';
+                    members.forEach(function(member) {
+                        var character = member.character
+                        membersHtml+='<tr>';
+                        membersHtml+='<td>'+character.name+'</td>';
+                        membersHtml+='<td>'+character.level+'</td>';
+                        membersHtml+='<td>'+ character.achievementPoints +'</td>';
+                        membersHtml+='<td>'+getRace(character.race)+'</td>';
+                        membersHtml+='<td>'+getClass(character.class)+'</td>';
+                        if(character.spec) {
+                            membersHtml+='<td>'+ character.spec.name +'</td>';
+                            membersHtml+='<td>'+ character.spec.role +'</td>';
+                        } else {
+                            membersHtml+='<td>None</td>';
+                            membersHtml+='<td>None</td>';
+                        }
+                        // membersHtml+='<td>'+character.spec.name+'</td>';
+                        // membersHtml+='<td>'+character.spec.role+'</td>';
+                        // membersHtml+='<td>'+character.spec.description+'</td>';
+                        membersHtml+='</tr>';
+                    });
+                    $('#guildName').html(guildName);
+                    $('#members-table tbody').html(membersHtml);
+                });
+        };
+
+        $(document).ready(function() {
+            getGuildMembers(guildName);
+        })
+    </script>
+</html>
