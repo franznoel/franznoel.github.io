@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>WoW - Choice</title>
+        <title>WoW - Characters and Guilds</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
         <!--Bootstrap -->
@@ -18,97 +18,62 @@
                 </div>
             </div>
             <div class="row" style="margin-bottom:10px;">
-                <div id="guilds-link" class="col-md-3">
-                    <a class="thumbnail" href="/wow/guilds" style="cursor:pointer;text-decoration:none;">
-                        <div class="caption">
-                            <h3>Guilds</h3>
-                            <p>Get the guilds.</p>
-                        </div>
-                    </a>
+                <div id="realmNameInput-container" class="col-md-3">
+                    <div class="form-group">
+                        <label for="realmNameInput">Realm Name</label>
+                        <input id="realmNameInput" class="form-control" placeholder="Realm Name" value="Dalaran" />
+                    </div>
                 </div>
-                <div id="characters-link" class="col-md-3">
-                    <a class="thumbnail" href="/wow/characters" style="cursor:pointer;text-decoration:none;">
-                        <div class="caption">
-                            <h3>Characters</h3>
-                            <p>Get the guilds.</p>
-                        </div>
-                    </a>
+                <div id="guildNameInput-container" class="col-md-3">
+                    <div class="form-group">
+                        <label for="guildNameInput">Guild Name</label>
+                        <input list="guildNameInput" name="guildNameInput" class="form-control" placeholder="Guild Name">
+                        <datalist id="guildNameInput">
+                            <option value="Reign Of Bloods">Reign Of Bloods</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn-toolbar" style="margin-top:4.25%;">
+                        <button type="button" id="searchButton" class="btn btn-primary">Search</button>
+                    </div>
                 </div>
             </div>
-
+            <table id="members-table" class="table table-bordered table-height table-collapsed tablesorter">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Achievement Points</th>
+                        <th>Specialty</th>
+                        <th>Race</th>
+                        <th>Class</th>
+                        <th>Role</th>
+                        <!--
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Description</th>
+                        -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7">Enter the Character Realm and Character Name to start.</td>
+                    <tr>
+                </tbody>
+            </table>
         </div>
 
     </body>
     <script type="text/javascript" src="/js/cookie.js"></script>
+    <script type="text/javascript" src="/js/wow.js"></script>
     <script type="text/javascript">
         var realmName = "Dalaran";
         //     guildName = "Reign Of Bloods",
         //     characterName = "Granlexios",
             apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
 
-        function getRace(characterRace) {
-            switch(characterRace) {
-                case 1:
-                    return 'Human';
-                case 2:
-                    return 'Orc';
-                case 3:
-                    return 'Dwarf';
-                case 4:
-                    return 'Night Elf';
-                case 5:
-                    return 'Undead';
-                case 6:
-                    return 'Tauren';
-                case 7:
-                    return 'Gnome';
-                case 8:
-                    return 'Troll';
-                case 9:
-                    return 'Goblin';
-                case 10:
-                    return 'Blood Elf';
-                case 11:
-                    return 'Draenei';
-                case 22:
-                    return 'Worgen';
-                case 24:
-                    return 'Pandaren';
-                case 25:
-                    return 'Pandaren';
-                case 26:
-                    return 'Pandaren';
-            }
-        }
 
-        function getClass(characterClass) {
-            switch(characterClass) {
-                case 1:
-                    return 'Warrior';
-                case 2:
-                    return 'Paladin';
-                case 3:
-                    return 'Hunter';
-                case 4:
-                    return 'Rogue';
-                case 5:
-                    return 'Priest';
-                case 6:
-                    return 'Death Knight';
-                case 7:
-                    return 'Shaman';
-                case 8:
-                    return 'Mage';
-                case 9:
-                    return 'Warlock';
-                case 9:
-                    return 'Monk';
-                case 11:
-                    return 'Druid';
-                case 12:
-                    return 'Demon Hunter';
-            }
-        }
 
         function getGuildMembers(realmName,guildName) {
             console.log(realmName,guildName)
@@ -121,7 +86,6 @@
                         // console.log(members.length);
                         if (members.length>=0) {
                             members.forEach(function(member) {
-                                console.log(member);
                                 var character = member.character;
                                 membersHtml+='<tr class="character-info" data-character="'+character.name+'">';
                                 membersHtml+='<td>'+character.name+'</td>';

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>WoW - Characters and Guilds</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!--Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- End Bootstrap -->
+        <script type="text/javascript" src="/bower_components/tablesorter/jquery.tablesorter.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Wow Finder</h3>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+                <div id="realmNameInput-container" class="col-md-3">
+                    <div class="form-group">
+                        <label for="realmNameInput">Realm Name</label>
+                        <input list="realmNameInput" name="realmNameInput" class="form-control" placeholder="Realm Name" />
+                        <datalist id="realmNameInput"></datalist>
+                    </div>
+                </div>
+                <div id="characterNameInput-container" class="col-md-3">
+                    <label for="characterNameInput">Character Name</label>
+                    <input id="characterNameInput" class="form-control" name="characterNameInput" placeholder="Character Name" value=""/>
+                </div>
+                <div class="col-md-3" style="margin-top:2.1%">
+                    <div class="btn-toolbar">
+                        <button type="button" id="searchButton" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div id="characterInfo">
+                <img class="characterThumbnail" src="" />
+                <div class="form-group">
+                    <label for="guildName">Guild Name</label>
+                    <p class="form-control-status guildName"></p>
+                </div>
+                <div class="form-group">
+                    <label for="race">Race</label>
+                    <p class="form-control-status race"></p>
+                </div>
+            </div>
+        </div>
+
+    </body>
+    <script type="text/javascript" src="/js/wow.js"></script>
+    <script type="text/javascript">
+        var apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
+    
+        // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
+        function getCharacterGuild() {
+            var realmName  = $('input[name=realmNameInput]').val(),
+                characterName  = $('#characterNameInput').val();
+            // console.log(realmName,guildName)
+
+            // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
+
+            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=guild&locale=en_US&apikey='+apiKey,
+                {},
+                function(data) {
+                    var character = data;
+                    // console.log(character);
+                    var characterString = JSON.stringify(character);
+
+                    $('.characterThumbnail').attr('src','http://render-us.worldofwarcraft.com/character/' + character.thumbnail);
+                    if (character.guild) {
+                        var guild = character.guild;
+                        $('#characterInfo .guildName').html(guild.name);
+                        $('#characterInfo .level').html(guild.name);
+                    }
+                    $('#characterInfo .race').html(getRace(character.race));
+                });
+        };
+
+        $(document).ready(function() {
+            $('#searchButton').click(function() {
+                getCharacterGuild();
+            });
+            getRealms(apiKey);
+        });
+    </script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+</html>
