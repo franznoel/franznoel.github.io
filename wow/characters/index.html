@@ -9,6 +9,7 @@
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!-- End Bootstrap -->
         <script type="text/javascript" src="/bower_components/tablesorter/jquery.tablesorter.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <nav class="navbar navbar-default navbar-static-top">
@@ -45,7 +46,7 @@
                 </div>
                 <div id="characterNameInput-container" class="col-md-3">
                     <label for="characterNameInput">Character Name</label>
-                    <input id="characterNameInput" class="form-control" name="characterNameInput" placeholder="Character Name" value=""/>
+                    <input id="characterNameInput" class="form-control" name="characterNameInput" placeholder="Character Name" value="Granlexios" />
                 </div>
                 <div class="col-md-3" style="margin-top:2.1%">
                     <div class="btn-toolbar">
@@ -53,16 +54,70 @@
                     </div>
                 </div>
             </div>
-            <div id="characterInfo">
-                <img class="characterThumbnail" src="" />
-                <div class="form-group">
-                    <label for="guildName">Guild Name</label>
-                    <p class="form-control-status guildName"></p>
+            <div id="characterInfo" class="row">
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img class="characterThumbnail" src="" style="width:100%"/>
+                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Name</th>
+                            <td class="name"></td>
+                        </tr>
+                        <tr>
+                            <th>Guild Name</th>
+                            <td class="guildName">--</td>
+                        </tr>
+                        <tr>
+                            <th>Level</th>
+                            <td class="level"></td>
+                        </tr>
+                        <tr>
+                            <th>Race</th>
+                            <td class="race"></td>
+                        </tr>
+                        <tr>
+                            <th>Realm</th>
+                            <td class="realm"></td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="race">Race</label>
-                    <p class="form-control-status race"></p>
+                <div class="col-md-9">
+                    <ul id="characterTabs" class="nav nav-tabs">
+                        <li class="active"><a href="#mounts">Mounts</a></li>
+                        <li><a href="#profession">Profession</a></li>
+                        <li><a href="#progression">Progression</a></li>
+                    </ul>
+                    <br/>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="mounts">
+                            <h3>Mounts</h3>
+                            <p><b>Collected:</b> <span class="mount-collected"></span></p>
+                            <p><b>Not Collected:</b> <span class="mount-notCollected"></span></p>
+                            <div class="row mount-collected-list">
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="profession">
+                            <h3>Professions</h3>
+                            <h5>Primary</h5>
+                            <div id="primary-profession">
+                            </div>
+                            <hr/>
+                            <h5>Secondary</h5>
+                            <div id="secondary-profession">
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="progression">
+                            <h3>Progression</h3>
+                            <h5>Raids</h5>
+                            <div id="raids">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div id="emptyCharacterInfo">
+                <p>Type in the <b>Realm Name</b> and <b>Character Name</b> to start.</p>
             </div>
         </div>
 
@@ -79,29 +134,145 @@
 
             // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
 
-            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=guild&locale=en_US&apikey='+apiKey,
-                {},
-                function(data) {
-                    var character = data;
-                    // console.log(character);
-                    var characterString = JSON.stringify(character);
+            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=guild%20items%20mounts%20professions%20progression&locale=en_US&apikey='+apiKey,
+            {},
+            function(data) {
+                var character = data;
+                console.log(character);
+                var characterString = JSON.stringify(character);
 
-                    $('.characterThumbnail').attr('src','http://render-us.worldofwarcraft.com/character/' + character.thumbnail);
-                    if (character.guild) {
-                        var guild = character.guild;
-                        $('#characterInfo .guildName').html(guild.name);
-                        $('#characterInfo .level').html(guild.name);
-                    }
-                    $('#characterInfo .race').html(getRace(character.race));
-                });
+                // Basic Character info
+                $('.characterThumbnail').attr('src','http://render-us.worldofwarcraft.com/character/' + character.thumbnail);
+                $('#characterInfo .name').html(character.name);
+                $('#characterInfo .level').html(character.level);
+                $('#characterInfo .race').html(getRace(character.race));
+                $('#characterInfo .realm').html(character.realm);
+
+                // Guild Info
+                if (character.guild) {
+                    var guild = character.guild;
+                    $('#characterInfo .guildName').html(guild.name ? guild.name : '');
+                }
+
+                // Mounts
+                var mounts = character.mounts;
+                if (mounts) {
+                    $('#characterInfo .mount-collected').html(mounts.numCollected ? mounts.numCollected : '');
+                    $('#characterInfo .mount-notCollected').html(mounts.numNotCollected ? mounts.numNotCollected : '');
+
+                    var mountsHtmlArray = [];
+                    mounts.collected.forEach(function(mount) {
+                        var mountsHtml = '';
+                        mountsHtml+= '<div class="col-md-4">';
+                        mountsHtml+= '<div class="panel panel-default" style="min-height:250px">'
+                        mountsHtml+= '<div class="panel-body">'
+                        mountsHtml+= '<img src="http://media.blizzard.com/wow/renders/npcs/pet/creature'+mount.creatureId+'.jpg" style="width:50%;margin:0 25%;"><br/>'
+                        mountsHtml+= '<b>Creature ID:</b> ' + mount.creatureId + '<br/>';
+                        mountsHtml+= '<b>Item ID:</b> ' + mount.itemId + '<br/>';
+                        mountsHtml+= '<b>Name:</b> ' + mount.name + '<br/>';
+                        mountsHtml+= mount.isAquatic ? '<code>Aquatic</code> ' : '';
+                        mountsHtml+= mount.isGround ? '<code>Ground</code> ' : '';
+                        mountsHtml+= mount.isJumping ? '<code>Jumping</code>' : '';
+                        mountsHtml+= '</div>';
+                        mountsHtml+= '</div>';
+                        mountsHtml+= '</div>';
+                        mountsHtmlArray.push(mountsHtml);
+                    });
+                    $('.mount-collected-list').html(mountsHtmlArray.join(''));
+                }
+
+                // Professions
+                var professions = character.professions;
+                if (professions) {
+                    var primaryProfessionsArray = [];
+                    // console.log(professions.primary);
+                    professions.primary.forEach(function(profession1) {
+                        var primaryProfessionsHtml = '';
+                        primaryProfessionsHtml+= '<b>Name:</b> ' + profession1.name + ' ' + profession1.rank + '/' + profession1.max + '<br/>';
+                        primaryProfessionsHtml+= '<div class="progress">';
+                        primaryProfessionsHtml+= '<div class="progress-bar" role="progressbar" aria-valuenow="'+profession1.rank+'" aria-valuemin="0" aria-valuemax="'+profession1.max+'" style="width: '+Math.round((profession1.rank/profession1.max)*100,2)+'%;">';
+                        primaryProfessionsHtml+= '<span class="sr-only">60% Complete</span>';
+                        primaryProfessionsHtml+= '</div>';
+                        primaryProfessionsHtml+= '</div>';
+                        primaryProfessionsArray.push(primaryProfessionsHtml);
+                    });
+                    $('#primary-profession').html(primaryProfessionsArray.join(''));
+
+                    var secondaryProfessionsArray = [];
+                    // console.log(professions.secondary);
+                    professions.secondary.forEach(function(profession2) {
+                        var secondaryProfessionsHtml = '';
+                        secondaryProfessionsHtml+= '<b>Name:</b> ' + profession2.name + ' ' + profession2.rank + '/' + profession2.max + '<br/>';
+                        secondaryProfessionsHtml+= '<div class="progress">';
+                        secondaryProfessionsHtml+= '<div class="progress-bar" role="progressbar" aria-valuenow="'+profession2.rank+'" aria-valuemin="0" aria-valuemax="'+profession2.max+'" style="width: '+Math.round((profession2.rank/profession2.max)*100,2)+'%;">';
+                        secondaryProfessionsHtml+= '<span class="sr-only">60% Complete</span>';
+                        secondaryProfessionsHtml+= '</div>';
+                        secondaryProfessionsHtml+= '</div>';
+                        secondaryProfessionsArray.push(secondaryProfessionsHtml);
+                    });
+                    $('#secondary-profession').html(secondaryProfessionsArray.join(''));                    
+                }
+
+                // Raids
+                var raids = character.progression.raids;
+                console.log(raids);
+                if (raids) {
+                    var raidsArray = [];
+                    // console.log(professions.primary);
+                    raids.forEach(function(raid) {
+                        var raidsHtml = '';
+                        raidsHtml+= '<div class="panel panel-default">'
+                        raidsHtml+= '<div class="panel-body">'
+                        raidsHtml+= '<b>Name:</b> ' + raid.name + '<br/>';
+                        raidsHtml+= '<b>Mythic:</b> ' + raid.mythic + '<br/>';
+                        raidsHtml+= '<b>Heroic:</b> ' + raid.heroic + '<br/>';
+                        raidsHtml+= '<table class="table table-bordered table-striped">';
+                        raidsHtml+= '<tr><th>Boss ID</th><th>Boss Name</th><th>Normal Kills</th></tr>';
+                        raid.bosses.forEach(function(boss) {
+                            raidsHtml+= '<tr>';
+                            raidsHtml+= '<td>'+boss.id+'</td>';
+                            raidsHtml+= '<td>'+boss.name+'</td>';
+                            raidsHtml+= '<td>'+boss.normalKills+'</td>';
+                            raidsHtml+= '</tr>';
+                        });
+                        raidsHtml+= '</table>';
+                        raidsHtml+= '</div>';
+                        raidsHtml+= '</div>';
+                        raidsArray.push(raidsHtml);
+                    });
+                    $('#raids').html(raidsArray.join(''));
+                }
+
+
+            });
+
+            $('#characterInfo').show();
+            $('#emptyCharacterInfo').hide();
+            
         };
+
+        function initCharacter() {
+            $('#characterInfo').hide();
+            $('#emptyCharacterInfo').show();
+        }
 
         $(document).ready(function() {
             $('#searchButton').click(function() {
                 getCharacterGuild();
             });
+
+            $('#characterTabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
             getRealms(apiKey);
+
+            initCharacter();
+
         });
+
+
     </script>
     <script type="text/javascript" src="/js/analytics.js"></script>
 </html>
