@@ -61,24 +61,26 @@
                     </div>
                     <table class="table table-bordered">
                         <tr>
-                            <th>Name</th>
-                            <td class="name"></td>
+                            <th>Name</th><td class="name"></td>
                         </tr>
                         <tr>
-                            <th>Guild Name</th>
-                            <td class="guildName">--</td>
+                            <th>Guild Name</th><td class="guildName">--</td>
                         </tr>
                         <tr>
-                            <th>Level</th>
-                            <td class="level"></td>
+                            <th>Level</th><td class="level"></td>
                         </tr>
                         <tr>
-                            <th>Race</th>
-                            <td class="race"></td>
+                            <th>Race</th><td class="race"></td>
                         </tr>
                         <tr>
-                            <th>Realm</th>
-                            <td class="realm"></td>
+                            <th>Realm</th><td class="realm"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Titles</th>
+                        </tr>
+                        <tr>
+                            <td class="titles" colspan="2">
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -134,7 +136,7 @@
 
             // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
 
-            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=guild%20items%20mounts%20professions%20progression&locale=en_US&apikey='+apiKey,
+            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=titles%20guild%20items%20mounts%20professions%20progression&locale=en_US&apikey='+apiKey,
             {},
             function(data) {
                 var character = data;
@@ -148,10 +150,24 @@
                 $('#characterInfo .race').html(getRace(character.race));
                 $('#characterInfo .realm').html(character.realm);
 
-                // Guild Info
-                if (character.guild) {
-                    var guild = character.guild;
+                // Guild
+                var guild = character.guild;
+                if (guild) {
                     $('#characterInfo .guildName').html(guild.name ? guild.name : '');
+                }
+
+                // Titles
+                var titles = character.titles;
+                if (titles) {
+                    var titlesHtmlArray = []
+                    titles.forEach(function (title) {
+                        var titleString = title.name;
+                        var titleHtml = titleString.replace('%s',character.name);
+                        titlesHtmlArray.push(titleHtml);
+                    });
+                    // console.log(titlesHtmlArray);
+                    $('.titles').html(titlesHtmlArray.join('<br/>'));
+
                 }
 
                 // Mounts
@@ -215,7 +231,7 @@
 
                 // Raids
                 var raids = character.progression.raids;
-                // console.log(raids);
+                // console.log(progression);
                 if (raids) {
                     var raidsArray = [];
                     // console.log(professions.primary);
