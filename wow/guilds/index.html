@@ -11,17 +11,36 @@
         <script type="text/javascript" src="/bower_components/tablesorter/jquery.tablesorter.min.js"></script>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Wow Finder</h3>
-                </div>
+        <nav class="navbar navbar-default navbar-static-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/wow/">WoW Finder</a>
             </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/wow/guilds/">Guild <span class="sr-only">(current)</span></a></li>
+                <li><a href="/wow/characters/">Characters</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="container">
             <div class="row" style="margin-bottom:10px;">
                 <div id="realmNameInput-container" class="col-md-3">
                     <div class="form-group">
                         <label for="realmNameInput">Realm Name</label>
-                        <input id="realmNameInput" class="form-control" placeholder="Realm Name" value="Dalaran" />
+                        <input id="realmNameInputText" list="realmNameInput" name="realmNameInput" class="form-control" placeholder="Realm Name" value="Dalaran" />
+                        <datalist id="realmNameInput"></datalist>
                     </div>
                 </div>
                 <div id="guildNameInput-container" class="col-md-3">
@@ -73,49 +92,6 @@
         //     characterName = "Granlexios",
             apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
 
-
-
-        function getGuildMembers(realmName,guildName) {
-            console.log(realmName,guildName)
-            if (realmName && guildName) {
-                $.getJSON('https://us.api.battle.net/wow/guild/'+realmName+'/'+guildName+'?fields=members&locale=en_US&apikey='+apiKey,
-                    {},
-                    function(data) {
-                        var members = data.members,
-                            membersHtml = '';
-                        // console.log(members.length);
-                        if (members.length>=0) {
-                            members.forEach(function(member) {
-                                var character = member.character;
-                                membersHtml+='<tr class="character-info" data-character="'+character.name+'">';
-                                membersHtml+='<td>'+character.name+'</td>';
-                                membersHtml+='<td>'+character.level+'</td>';
-                                membersHtml+='<td>'+ character.achievementPoints +'</td>';
-                                membersHtml+='<td>'+getRace(character.race)+'</td>';
-                                membersHtml+='<td>'+getClass(character.class)+'</td>';
-                                if(character.spec) {
-                                    membersHtml+='<td>'+ character.spec.name +'</td>';
-                                    membersHtml+='<td>'+ character.spec.role +'</td>';
-                                } else {
-                                    membersHtml+='<td>None</td>';
-                                    membersHtml+='<td>None</td>';
-                                }
-                                membersHtml+='</tr>';
-                            });
-                        } else {
-                            membersHtml+='<tr>';
-                            membersHtml+='<td colspan="7">There is no Guild found with that name in this Realm.</td>';
-                            membersHtml+='</tr>';
-                        }
-
-                        $('#members-table tbody').html(membersHtml);
-                        $('#realmNameInput').val(realmName);
-                    }
-                );
-            }
-
-        };
-
         $(document).ready(function() {
 
             $(document).on('click','.character-info',function(e) {
@@ -125,14 +101,15 @@
             });
 
             $('#searchButton').click(function() {
-                var realmName = $('#realmNameInput').val(),
+                var realmName = $('#realmNameInputText').val(),
                     guildName = $('input[name=guildNameInput]').val();
-;
                 getGuildMembers(realmName,guildName);
             });
 
             $('#members-table').tablesorter();
-        })
+            getRealms(apiKey);
+
+        });
     </script>
     <script type="text/javascript" src="/js/analytics.js"></script>
 </html>

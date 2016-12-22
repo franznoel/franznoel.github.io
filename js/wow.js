@@ -1,3 +1,43 @@
+function getGuildMembers(realmName,guildName) {
+    console.log(realmName,guildName)
+    if (realmName && guildName) {
+        $.getJSON('https://us.api.battle.net/wow/guild/'+realmName+'/'+guildName+'?fields=members&locale=en_US&apikey='+apiKey,
+            {},
+            function(data) {
+                var members = data.members,
+                    membersHtml = '';
+                // console.log(members.length);
+                if (members.length>=0) {
+                    members.forEach(function(member) {
+                        var character = member.character;
+                        membersHtml+='<tr class="character-info" data-character="'+character.name+'">';
+                        membersHtml+='<td>'+character.name+'</td>';
+                        membersHtml+='<td>'+character.level+'</td>';
+                        membersHtml+='<td>'+ character.achievementPoints +'</td>';
+                        membersHtml+='<td>'+getRace(character.race)+'</td>';
+                        membersHtml+='<td>'+getClass(character.class)+'</td>';
+                        if(character.spec) {
+                            membersHtml+='<td>'+ character.spec.name +'</td>';
+                            membersHtml+='<td>'+ character.spec.role +'</td>';
+                        } else {
+                            membersHtml+='<td>None</td>';
+                            membersHtml+='<td>None</td>';
+                        }
+                        membersHtml+='</tr>';
+                    });
+                } else {
+                    membersHtml+='<tr>';
+                    membersHtml+='<td colspan="7">There is no Guild found with that name in this Realm.</td>';
+                    membersHtml+='</tr>';
+                }
+
+                $('#members-table tbody').html(membersHtml);
+                $('#realmNameInput').val(realmName);
+            }
+        );
+    }
+}
+
 function getRealms(apiKey) {
     $.getJSON('https://us.api.battle.net/wow/realm/status?locale=en_US&apikey='+apiKey,
         {},
@@ -8,7 +48,7 @@ function getRealms(apiKey) {
             // console.log(realms);
             if (realms.length>=0) {
                 realms.forEach(function(realm) {
-                    realmNameHtml+= '<option value="'+realm.slug+'">'+realm.name+'</option>';
+                    realmNameHtml+= '<option value="'+realm.name+'">'+realm.name+'</option>';
                 });
             }
             // console.log(realmNameHtml);

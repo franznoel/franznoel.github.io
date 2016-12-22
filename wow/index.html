@@ -22,7 +22,7 @@
                     <a class="thumbnail" href="/wow/guilds" style="cursor:pointer;text-decoration:none;">
                         <div class="caption">
                             <h3>Guilds</h3>
-                            <p>Get the guilds.</p>
+                            <p>Get the guild information.</p>
                         </div>
                     </a>
                 </div>
@@ -30,7 +30,7 @@
                     <a class="thumbnail" href="/wow/characters" style="cursor:pointer;text-decoration:none;">
                         <div class="caption">
                             <h3>Characters</h3>
-                            <p>Get the guilds.</p>
+                            <p>Get character information.</p>
                         </div>
                     </a>
                 </div>
@@ -39,136 +39,5 @@
         </div>
 
     </body>
-    <script type="text/javascript" src="/js/cookie.js"></script>
-    <script type="text/javascript">
-        var realmName = "Dalaran";
-        //     guildName = "Reign Of Bloods",
-        //     characterName = "Granlexios",
-            apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
-
-        function getRace(characterRace) {
-            switch(characterRace) {
-                case 1:
-                    return 'Human';
-                case 2:
-                    return 'Orc';
-                case 3:
-                    return 'Dwarf';
-                case 4:
-                    return 'Night Elf';
-                case 5:
-                    return 'Undead';
-                case 6:
-                    return 'Tauren';
-                case 7:
-                    return 'Gnome';
-                case 8:
-                    return 'Troll';
-                case 9:
-                    return 'Goblin';
-                case 10:
-                    return 'Blood Elf';
-                case 11:
-                    return 'Draenei';
-                case 22:
-                    return 'Worgen';
-                case 24:
-                    return 'Pandaren';
-                case 25:
-                    return 'Pandaren';
-                case 26:
-                    return 'Pandaren';
-            }
-        }
-
-        function getClass(characterClass) {
-            switch(characterClass) {
-                case 1:
-                    return 'Warrior';
-                case 2:
-                    return 'Paladin';
-                case 3:
-                    return 'Hunter';
-                case 4:
-                    return 'Rogue';
-                case 5:
-                    return 'Priest';
-                case 6:
-                    return 'Death Knight';
-                case 7:
-                    return 'Shaman';
-                case 8:
-                    return 'Mage';
-                case 9:
-                    return 'Warlock';
-                case 9:
-                    return 'Monk';
-                case 11:
-                    return 'Druid';
-                case 12:
-                    return 'Demon Hunter';
-            }
-        }
-
-        function getGuildMembers(realmName,guildName) {
-            console.log(realmName,guildName)
-            if (realmName && guildName) {
-                $.getJSON('https://us.api.battle.net/wow/guild/'+realmName+'/'+guildName+'?fields=members&locale=en_US&apikey='+apiKey,
-                    {},
-                    function(data) {
-                        var members = data.members,
-                            membersHtml = '';
-                        // console.log(members.length);
-                        if (members.length>=0) {
-                            members.forEach(function(member) {
-                                console.log(member);
-                                var character = member.character;
-                                membersHtml+='<tr class="character-info" data-character="'+character.name+'">';
-                                membersHtml+='<td>'+character.name+'</td>';
-                                membersHtml+='<td>'+character.level+'</td>';
-                                membersHtml+='<td>'+ character.achievementPoints +'</td>';
-                                membersHtml+='<td>'+getRace(character.race)+'</td>';
-                                membersHtml+='<td>'+getClass(character.class)+'</td>';
-                                if(character.spec) {
-                                    membersHtml+='<td>'+ character.spec.name +'</td>';
-                                    membersHtml+='<td>'+ character.spec.role +'</td>';
-                                } else {
-                                    membersHtml+='<td>None</td>';
-                                    membersHtml+='<td>None</td>';
-                                }
-                                membersHtml+='</tr>';
-                            });
-                        } else {
-                            membersHtml+='<tr>';
-                            membersHtml+='<td colspan="7">There is no Guild found with that name in this Realm.</td>';
-                            membersHtml+='</tr>';
-                        }
-
-                        $('#members-table tbody').html(membersHtml);
-                        $('#realmNameInput').val(realmName);
-                    }
-                );
-            }
-
-        };
-
-        $(document).ready(function() {
-
-            $(document).on('click','.character-info',function(e) {
-                e.preventDefault();
-                var characterInfo = $(this).data('character');
-                console.log(characterInfo);
-            });
-
-            $('#searchButton').click(function() {
-                var realmName = $('#realmNameInput').val(),
-                    guildName = $('input[name=guildNameInput]').val();
-;
-                getGuildMembers(realmName,guildName);
-            });
-
-            $('#members-table').tablesorter();
-        })
-    </script>
     <script type="text/javascript" src="/js/analytics.js"></script>
 </html>
