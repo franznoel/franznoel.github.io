@@ -1,5 +1,5 @@
 function getGuildMembers(realmName,guildName) {
-    console.log(realmName,guildName)
+    // console.log(realmName,guildName)
     if (realmName && guildName) {
         $.getJSON('https://us.api.battle.net/wow/guild/'+realmName+'/'+guildName+'?fields=members&locale=en_US&apikey='+apiKey,
             {},
@@ -33,6 +33,9 @@ function getGuildMembers(realmName,guildName) {
 
                 $('#members-table tbody').html(membersHtml);
                 $('#realmNameInput').val(realmName);
+
+                var membersTable = document.getElementById('members-table')
+                sorttable.makeSortable(membersTable);
             }
         );
     }
