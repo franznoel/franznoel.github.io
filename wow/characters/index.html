@@ -74,6 +74,9 @@
                             <th>Achievement</th><td class="achievementPoints"></td>
                         </tr>
                         <tr>
+                            <th>Honorable Kills</th><td class="honorableKills"></td>
+                        </tr>
+                        <tr>
                             <th>Guild Name</th><td class="guildName">--</td>
                         </tr>
                         <tr>
@@ -185,6 +188,7 @@
                     // dateModified = dateModified.toUTCString();
                     $('#lastModified .info').html(dateModified);
                     $('#characterInfo .achievementPoints').html((character.achievementPoints || character.achievementPoints=='') ? character.achievementPoints : '');
+                    $('#characterInfo .honorableKills').html((character.totalHonorableKills || character.totalHonorableKills=='') ? character.totalHonorableKills : '');
                     $('#characterInfo .level').html((character.level || character.level=='') ? character.level : '');
                     $('#characterInfo .race').html(getRace(character.race));
                     $('#characterInfo .realm').html((character.realm || character.realm=='') ? character.realm : '');
