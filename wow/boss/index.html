@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>WoW - Boss</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!--Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- End Bootstrap -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/wow/">WoW Finder</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li><a href="/wow/guilds/">Guild</a></li>
+                <li><a href="/wow/characters/">Characters</a></li>
+                <li class="active"><a href="/wow/boss/">Boss <span class="sr-only">(current)</span></a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="container">
+            <div class="row" style="margin-bottom:10px;">
+                <div id="realmNameInput-container" class="col-md-3">
+                    <div class="form-group">
+                        <label for="bossNameInput">Boss Name</label>
+                        <input list="bossNameInput" name="bossNameInput" class="form-control" placeholder="Realm Name" value=""/>
+                        <datalist id="bossNameInput"></datalist>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-top:2.1%">
+                    <div class="btn-toolbar">
+                        <button type="button" id="searchButton" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div id="bosses" class="row">
+                <pre></pre>                
+            </div>
+            <div id="emptyCharacterInfo">
+                <p>Type in the <b>Realm Name</b> and <b>Character Name</b> to start.</p>
+            </div>
+        </div>
+
+    </body>
+    <script type="text/javascript" src="/wow/libs/js/wow.js"></script>
+    <script type="text/javascript">
+        var apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
+    
+        // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
+        function getBosses(apiKey) {
+            var bossName  = $('#bossNameInput').val();
+            // console.log(realmName,guildName);
+
+            // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
+            $.getJSON('/wow/resources/boss.json',
+            {},
+            function(data) {
+                console.log(data);
+            });
+        };
+
+        function initCharacter() {
+            $('#characterInfo').hide();
+            $('#emptyCharacterInfo').show();
+        }
+
+        $(document).ready(function() {
+            $('#searchButton').click(function() {
+                // getBosses(apiKey);
+            });
+            getBosses(apiKey);
+        });
+
+
+    </script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+</html>

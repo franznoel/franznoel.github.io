@@ -1,3 +1,6 @@
 .character-info {
     cursor:pointer;    
 }
+#lastModified .info {
+    font-size:12px;
+}

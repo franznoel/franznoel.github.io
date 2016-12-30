@@ -10,6 +10,7 @@
         <!-- End Bootstrap -->
         <script type="text/javascript" src="/bower_components/tablesorter/jquery.tablesorter.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/wow/libs/css/main.css" />
     </head>
     <body>
         <nav class="navbar navbar-default navbar-static-top">
@@ -30,6 +31,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="/wow/guilds/">Guild</a></li>
                 <li class="active"><a href="/wow/characters/">Characters <span class="sr-only">(current)</span></a></li>
+                <li><a href="/wow/boss/">Boss</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
@@ -59,9 +61,17 @@
                     <div class="thumbnail">
                         <img class="characterThumbnail" src="" style="width:100%"/>
                     </div>
+                    
+                    <div id="lastModified">
+                        <p><b>Last Modified:</b><br/> <span class="info"></span></p>
+                    </div>
+
                     <table class="table table-bordered">
                         <tr>
                             <th>Name</th><td class="name"></td>
+                        </tr>
+                        <tr>
+                            <th>Achievement</th><td class="achievementPoints"></td>
                         </tr>
                         <tr>
                             <th>Guild Name</th><td class="guildName">--</td>
@@ -89,6 +99,7 @@
                         <li class="active"><a href="#mounts">Mounts</a></li>
                         <li><a href="#profession">Profession</a></li>
                         <li><a href="#progression">Progression</a></li>
+                        <li><a href="#stats">Stats</a></li>
                     </ul>
                     <br/>
                     <div class="tab-content">
@@ -115,6 +126,19 @@
                             <div id="raids">
                             </div>
                         </div>
+                        <div class="tab-pane" id="stats">
+                            <h3>Stats</h3>
+                            <table id="stats-table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Stats</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,6 +151,10 @@
     <script type="text/javascript" src="/wow/libs/js/wow.js"></script>
     <script type="text/javascript">
         var apiKey = 'kja9u5sbtyq9cy8vmfwm294ag8d2hsp2';
+
+        function getModifiedDate() {
+
+        }
     
         // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
         function getCharacterGuild() {
@@ -135,7 +163,7 @@
             // console.log(realmName,guildName);
 
             // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
-            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=titles%20guild%20items%20mounts%20professions%20progression&locale=en_US&apikey='+apiKey,
+            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=titles%20guild%20items%20mounts%20professions%20progression%20stats%20acheivements&locale=en_US&apikey='+apiKey,
             {},
             function(data) {
                 var character = data;
@@ -153,6 +181,10 @@
                     else
                         $('#characterInfo .name').html('');
 
+                    var dateModified = new Date(character.lastModified);
+                    // dateModified = dateModified.toUTCString();
+                    $('#lastModified .info').html(dateModified);
+                    $('#characterInfo .achievementPoints').html((character.achievementPoints || character.achievementPoints=='') ? character.achievementPoints : '');
                     $('#characterInfo .level').html((character.level || character.level=='') ? character.level : '');
                     $('#characterInfo .race').html(getRace(character.race));
                     $('#characterInfo .realm').html((character.realm || character.realm=='') ? character.realm : '');
@@ -266,6 +298,20 @@
                         });
                         $('#raids').html(raidsArray.join(''));
                     }
+
+                    var stats = character.stats;
+                    if (stats) {
+                        var statsHtml = '';
+                        for (var key in stats) {
+                            statsHtml+= '<tr>';
+                            statsHtml+= '<td>'+ key +'</td>';
+                            statsHtml+= '<td>'+ stats[key] +'</td>';
+                            statsHtml+= '</tr>';
+                        }
+                        $('#stats-table tbody').html(statsHtml);
+                    }
+
+
                     $('#emptyCharacterInfo').hide();
                     $('#characterInfo').show();
                 }
