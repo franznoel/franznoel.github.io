@@ -334,7 +334,7 @@
                             console.log(feed);
                             feedHtml+= '<div class="panel panel-default">';
                             feedHtml+= '<div class="panel-body">';
-                            feedHtml+= '<h4 style="padding:0;margin:0;text-transform-capitalize">'+feed.type+'</h4>'
+                            feedHtml+= '<h4 style="padding:0;margin:0;text-transform:capitalize;">'+feed.type+'</h4>'
 
                             if (feed.type=='ACHIEVEMENT') {
                                 feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
@@ -363,8 +363,15 @@
                                 feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
                                 feedHtml+= '<div>Has achieved <b>'+feed.achievement.id +': '+ feed.achievement.title+'</b> '+feed.achievement.description+'</div>';
                             } else if (feed.type=='BOSSKILL') {
+                                feedHtml+= '<div>Killed <b>'+feed.achievement.id +': '+ feed.achievement.title+'</b> </div>';
                                 feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
-                                feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
+                                // Criteria
+                                if (feed.achievement.criteria.length > 0) {
+                                    var criteria = feed.achievement.criteria;
+                                    criteria.forEach(function(crit) {
+                                        feedHtml+= '<span class="label label-primary">'+crit.id+': '+ crit.description +'</span> ';
+                                    });
+                                }
                             }
 
                             feedHtml+= '<div style="font-size:10px;">'+new Date(feed.timestamp)+'</div>';
