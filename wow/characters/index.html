@@ -99,14 +99,16 @@
                 </div>
                 <div class="col-md-9">
                     <ul id="characterTabs" class="nav nav-tabs">
-                        <li class="active"><a href="#mounts">Mounts</a></li>
+                        <li><a href="#mounts">Mounts</a></li>
                         <li><a href="#profession">Profession</a></li>
                         <li><a href="#progression">Progression</a></li>
                         <li><a href="#stats">Stats</a></li>
+                        <li><a href="#quests">Quests</a></li>
+                        <li class="active"><a href="#feed">Feed</a></li>
                     </ul>
                     <br/>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="mounts">
+                        <div class="tab-pane" id="mounts">
                             <h3>Mounts</h3>
                             <p><b>Collected:</b> <span class="mount-collected"></span></p>
                             <p><b>Not Collected:</b> <span class="mount-notCollected"></span></p>
@@ -142,6 +144,13 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="tab-pane" id="quests">
+                            <h3>Quests</h3>
+                        </div>
+                        <div class="tab-pane active" id="feed">
+                            <h3>Feed</h3>
+                            <div id="feed-content"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -166,13 +175,12 @@
             // console.log(realmName,guildName);
 
             // http://render-us.worldofwarcraft.com/character/dalaran/191/159691967-avatar.jpg
-            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=titles%20guild%20items%20mounts%20professions%20progression%20stats%20acheivements&locale=en_US&apikey='+apiKey,
+            $.getJSON('https://us.api.battle.net/wow/character/'+realmName+'/'+characterName+'?fields=feed%20titles%20guild%20items%20mounts%20professions%20progression%20stats%20acheivements%20quests&locale=en_US&apikey='+apiKey,
             {},
             function(data) {
                 var character = data;
                 // console.log(character);
                 // var characterString = JSON.stringify(character);
-                console.log(character);
 
                 // Basic Character info
                 if (character) {
@@ -303,6 +311,7 @@
                         $('#raids').html(raidsArray.join(''));
                     }
 
+                    // Stats
                     var stats = character.stats;
                     if (stats) {
                         var statsHtml = '';
@@ -313,6 +322,56 @@
                             statsHtml+= '</tr>';
                         }
                         $('#stats-table tbody').html(statsHtml);
+                    }
+
+                    // Feed
+                    var feeds = character.feed;
+                    if (feeds) {
+                        var feedHtml = '';
+                        // console.log(feeds);
+                        // console.log(feeds[0]);
+                        feeds.forEach(function(feed) {
+                            console.log(feed);
+                            feedHtml+= '<div class="panel panel-default">';
+                            feedHtml+= '<div class="panel-body">';
+                            feedHtml+= '<h4 style="padding:0;margin:0;text-transform-capitalize">'+feed.type+'</h4>'
+
+                            if (feed.type=='ACHIEVEMENT') {
+                                feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
+                                feedHtml+= '<div>Has achieved <b>'+feed.achievement.id +': '+ feed.achievement.title+'</b> <br/>'+feed.achievement.description+'</div>';
+
+                                // Criteria
+                                if (feed.achievement.criteria.length > 0) {
+                                    var criteria = feed.achievement.criteria;
+                                    criteria.forEach(function(crit) {
+                                        feedHtml+= '<span class="label label-success">'+crit.id+': '+ crit.description +'</span> ';
+                                    });
+                                }
+
+                                feedHtml+='<br/>';
+                                // Reward Items
+                                if (feed.achievement.rewardItems.length > 0) {
+                                    feedHtml+= '<b>Rewards:</b> ';
+                                    var rewards = feed.achievement.rewardItems;
+                                    rewards.forEach(function(reward) {
+                                        feedHtml+= '<span class="label label-danger">'+reward.id+': ' + reward.name +'</span> ';
+                                    });
+                                }
+                            } else if (feed.type=='LOOT') {
+                                feedHtml+= '<div>Loot an item <span class="label label-danger">'+feed.itemId+'</span></div>';
+                            } else if (feed.type=='CRITERIA') {
+                                feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
+                                feedHtml+= '<div>Has achieved <b>'+feed.achievement.id +': '+ feed.achievement.title+'</b> '+feed.achievement.description+'</div>';
+                            } else if (feed.type=='BOSSKILL') {
+                                feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
+                                feedHtml+= '<div>Points: <span class="label label-warning">'+feed.achievement.points+'</span></div>';
+                            }
+
+                            feedHtml+= '<div style="font-size:10px;">'+new Date(feed.timestamp)+'</div>';
+                            feedHtml+= '</div>';
+                            feedHtml+= '</div>';
+                        });
+                        $('#feed-content').html(feedHtml);
                     }
 
 

@@ -96,3 +96,12 @@ function getClass(characterClass) {
         case 12: return 'Demon Hunter';
     }
 }
+
+function getQuest(questId) {
+    var quests = localStorage.getItem('quests');
+    if (quests) {
+        return JSON.parse(quests);
+    } else {
+        // Return quest if quest id exists, otherwise save it and return quests
+    }
+}
