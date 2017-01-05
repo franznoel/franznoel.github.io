@@ -7,6 +7,8 @@ function getGuildMembers(realmName,guildName) {
                 var members = data.members,
                     membersHtml = '';
                 // console.log(members.length);
+
+                $('.guild-member-count').html(members.length);
                 if (members.length>=0) {
                     members.forEach(function(member) {
                         var character = member.character;
