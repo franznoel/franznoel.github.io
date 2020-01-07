@@ -1,18 +1,21 @@
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import React, { Component } from 'react';
+import MainToolbar from './components/MainToolbar';
 
 import './App.css';
 
-function App() {
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6">PangPawn</Typography>
-      </Toolbar>
-    </AppBar>
-  );
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <MainToolbar></MainToolbar>
+      </div>
+    );
+  }
 }
 
 export default App;
