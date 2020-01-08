@@ -84,15 +84,15 @@ export default function MainToolbar(props) {
             </div>
             <Divider />
             <List>
-            {['Members'].map((text, index) => (
+            {['Portfolio'].map((text) => (
                 <ListItem button key={text}>
                 <ListItemText primary={text} />
                 </ListItem>
             ))}
             </List>
         </div>
-    );    
-    
+    );
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -107,7 +107,7 @@ export default function MainToolbar(props) {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" noWrap>PangMembers</Typography>
+                    <Typography variant="h6" noWrap>{props.title}</Typography>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
