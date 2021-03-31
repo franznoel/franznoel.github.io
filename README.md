@@ -1,37 +1,23 @@
-## Welcome to GitHub Pages
+## Welcome to Franz's GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/franznoel/franznoel.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+I am a web developer who offers several years of full stack development experience. I can use project management tools to both manage a team and deliver my own projects. I started as a backend programmer, worked as a front end developer, and managed multiple overseas and in-house employees for different companies. I can use different programming languages with proper use of OOP, data structures, and other design patterns. With regards to server and systems management, I am able to use cloud platforms, program Bash, or create proprietary applications connected to private platforms. I can use different databases ranging from SQL to NoSQL. Combining the knowledge I possess, I can create my own framework or use other frameworks. In project management, I am well-versed using Jira Agile, and the use of JQL. I can use network protocols and secure a system architectural design, comfortably use command lines, scale servers and networks, and have a strong passion to document all I’ve learned in my experience and explain things thoroughly.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Software Experiences
 
-### Markdown
+Here are some of my software experiences
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/franznoel/franznoel.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+- **Languages**: Python, Java, PHP, HTML, JavaScript, MySQL, jQuery
+- **E-Commerce Software:** Magento, XCart, MiRetail, and ATG eCommerce
+- **CMS:** Wordpress, or custom made using PHP/Python
+- **Protocols:** DNS ADDRESS, IP ADDRESS, HTTP, FTP, TCP, UDP, WS, etc.
+- **Package Managers:** NPM, Linux Package Managers, PIP (Python)
+- **Databases:** MySQL, PgSQL, Google Datastore, MongoDB, Google BigQuery
+- **Servers:** Google Cloud, AWS, NodeJs, Apache, AWS S3, AWS SNS, and Firebase
+- **Repositories:** SVN, Mercurial, Git, Jira (repository controller)
+- **Pipeline:Pipeline:** Jenkins, Artifactory
+- **Operating Systems:** Linux/Ubuntu (Bash), Windows, and Mac
+- **Graphic Design:** Gimp and Adobe Photoshop
+- **IDE: Eclipse, Sublime Text 3, and Notepad++, XCode, Visual Studio
+- **Design Patterns Advocate:** Practices Model View Controller (MVC), Model View Presenter (MVP), OOP, etc.
+- **Project Management Tools:** Jira Agile
+- **Web/Application Tools:** Bootstrap, Semantic UI, Zurb Foundation, Webix, Angular, ReactJS
