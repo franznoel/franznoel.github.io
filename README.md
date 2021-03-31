@@ -17,7 +17,7 @@ Here are some of my software experiences
 - **Pipeline:Pipeline:** Jenkins, Artifactory
 - **Operating Systems:** Linux/Ubuntu (Bash), Windows, and Mac
 - **Graphic Design:** Gimp and Adobe Photoshop
-- **IDE: Eclipse, Sublime Text 3, and Notepad++, XCode, Visual Studio
+- **IDE:** Eclipse, Sublime Text 3, and Notepad++, XCode, Visual Studio
 - **Design Patterns Advocate:** Practices Model View Controller (MVC), Model View Presenter (MVP), OOP, etc.
 - **Project Management Tools:** Jira Agile
 - **Web/Application Tools:** Bootstrap, Semantic UI, Zurb Foundation, Webix, Angular, ReactJS
