@@ -384,3 +384,5 @@ templates/ - actual templates of YAML files are stored
 * If the service does not have an assigned IP address, it will automatically use the IP address of the Pod.
 * You can either use Ingress or a real AWS Load Balancer to communicate with ClusterIP
 
+**Note:** Kubernetes is an enclosed structure and only communicates within the cluster. You'd have to expose the port by specifying which [External IP address can communicate with the Kubernetes](https://docs.solace.com/Cloud/Deployment-Considerations/k8s-using-clusterip-externalip.htm#:~:text=The%20customer%20can%20expose%20their,specified%20using%20the%20externalIP%20property.). 
+
