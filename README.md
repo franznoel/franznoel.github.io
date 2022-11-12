@@ -1,5 +1,4 @@
-* Kubernetes
-  - [Cheat sheets](https://franznoel.github.io/kubernetes/cheat-sheet)
+* [Kubernetes Cheat sheets](https://franznoel.github.io/kubernetes/cheat-sheet)
 
 
 
