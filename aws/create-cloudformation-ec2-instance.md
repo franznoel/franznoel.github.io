@@ -47,12 +47,12 @@ Resources:
 
 ## Deploy your EC2 instance
 
-Deploy EC2 using CloudFormation and Makefile by running this command.
+Deploy EC2 using CloudFormation by running this command.
 
 ```
 aws cloudformation deploy \
-	--template-file=simple-ec2.yml \
-	--stack-name=simple-ec2
+  --template-file=simple-ec2.yml \
+  --stack-name=simple-ec2
 ```
 
 ## Get the Key Pair value
