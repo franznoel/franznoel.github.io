@@ -1,4 +1,4 @@
-## Blogs
+## Franz's Blogs
 
 * [Kubernetes Cheat sheets](https://franznoel.github.io/kubernetes/cheat-sheet)
 * [Create an AWS CloudFormation EC2 Instance](https://franznoel.github.io/aws/create-cloudformation-ec2-instance)
