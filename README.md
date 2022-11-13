@@ -1,5 +1,5 @@
 * [Kubernetes Cheat sheets](https://franznoel.github.io/kubernetes/cheat-sheet)
-* [Create an AWS CloudFormation EC2 Instance](create-cloudformation-ec2-instance.md)
+* [Create an AWS CloudFormation EC2 Instance](https://franznoel.github.io/aws/create-cloudformation-ec2-instance.md)
 
 
 ## Welcome to Franz's GitHub Pages
