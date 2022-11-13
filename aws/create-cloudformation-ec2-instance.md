@@ -1,4 +1,4 @@
-# Useful AWS Command Lines with CloudFormation
+# Create AWS EC2 Instance Using CloudFormation
 
 ## CloudFormation Template
 
